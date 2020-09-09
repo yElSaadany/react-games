@@ -1,0 +1,12 @@
+/* Snake CSS */
+.game-container {
+  width: 900px;
+  height: 600px;
+  border: solid black 2px;
+}
+
+.snake-part {
+  width: 30px;
+  height: 30px;
+  background-color: chartreuse;
+}
