@@ -21,14 +21,13 @@ export const Snake = (props) => {
     [14, 10],
     [13, 10],
   ]);
-
   const [food, setFood] = useState(getRandomCoordinates());
+  const [score, setScore] = useState(1);
+  const [gameOver, setGameOver] = useState(1);
 
   const drawSnake = (ctx) => {
     ctx.fillStyle = "green";
-    console.log("DRAWN SNAKE " + snake);
     snake.map((part) => {
-      console.log("X " + part[0] + " Y " + part[1]);
       ctx.fillRect(part[0] * 30, part[1] * 30, 29, 29);
     });
   };
@@ -42,48 +41,77 @@ export const Snake = (props) => {
     if (direction == "RIGHT") {
       setSnake((prev) => {
         let tmp = [...prev];
-        console.log("PREVIOUS SNAKE " + tmp);
         const head = tmp[0];
         const newHead = [head[0] + 1, head[1]];
         tmp.pop();
         tmp.unshift(newHead);
-        console.log("NEW SNAKE " + tmp);
         return tmp;
       });
     } else if (direction == "LEFT") {
       setSnake((prev) => {
         let tmp = [...prev];
-        console.log("PREVIOUS SNAKE " + tmp);
         const head = tmp[0];
         const newHead = [head[0] - 1, head[1]];
         tmp.pop();
         tmp.unshift(newHead);
-        console.log("NEW SNAKE " + tmp);
         return tmp;
       });
     } else if (direction == "UP") {
       setSnake((prev) => {
         let tmp = [...prev];
-        console.log("PREVIOUS SNAKE " + tmp);
         const head = tmp[0];
         const newHead = [head[0], head[1] - 1];
         tmp.pop();
         tmp.unshift(newHead);
-        console.log("NEW SNAKE " + tmp);
         return tmp;
       });
     } else {
       setSnake((prev) => {
         let tmp = [...prev];
-        console.log("PREVIOUS SNAKE " + tmp);
         const head = tmp[0];
         const newHead = [head[0], head[1] + 1];
         tmp.pop();
         tmp.unshift(newHead);
-        console.log("NEW SNAKE " + tmp);
         return tmp;
       });
     }
+  };
+
+  const checkCollision = () => {
+    // The snake eats
+    if (snake[0][0] === food[0] && snake[0][1] === food[1]) {
+      setSnake((prev) => {
+        let tmp = [...prev];
+        let last = tmp[tmp.length - 1];
+        if (direction == "RIGHT") {
+          tmp.push([last[0] - 1, last[1]]);
+          return tmp;
+        } else if (direction == "LEFT") {
+          tmp.push([last[0] + 1, last[1]]);
+          return tmp;
+        } else if (direction == "UP") {
+          tmp.push([last[0], last[1] + 1]);
+          return tmp;
+        } else {
+          tmp.push([last[0], last[1] - 1]);
+          return tmp;
+        }
+      });
+      setFood(getRandomCoordinates);
+      setScore((prev) => {
+        return prev + 1;
+      });
+      console.log(score);
+    }
+
+    // The snake bites itself
+    const head = snake[0];
+    snake.slice(1).forEach((part) => {
+      if (part[0] === head[0] && part[1] === head[1]) {
+        setGameOver(true);
+        console.log("Game Over");
+      }
+    });
   };
 
   useEffect(() => {
@@ -91,16 +119,36 @@ export const Snake = (props) => {
       const interval = setInterval(() => setTime(Date.now), 100);
       document.addEventListener("keydown", (e) => {
         if (e.key === "j" || e.key === "ArrowDown") {
-          setDirection("DOWN");
+          setDirection((prev) => {
+            if (prev !== "UP") {
+              return "DOWN";
+            }
+            return prev;
+          });
         }
         if (e.key === "k") {
-          setDirection("UP");
+          setDirection((prev) => {
+            if (prev !== "DOWN") {
+              return "UP";
+            }
+            return prev;
+          });
         }
         if (e.key === "h") {
-          setDirection("LEFT");
+          setDirection((prev) => {
+            if (prev !== "RIGHT") {
+              return "LEFT";
+            }
+            return prev;
+          });
         }
         if (e.key === "l") {
-          setDirection("RIGHT");
+          setDirection((prev) => {
+            if (prev !== "LEFT") {
+              return "RIGHT";
+            }
+            return prev;
+          });
         }
       });
     } else {
@@ -108,9 +156,10 @@ export const Snake = (props) => {
       const ctx = canvas.getContext("2d");
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      drawSnake(ctx);
       drawFood(ctx);
+      drawSnake(ctx);
       moveSnake();
+      checkCollision();
     }
   }, [time]);
 
