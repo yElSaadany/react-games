@@ -75,6 +75,9 @@ export const Snake = (props) => {
   useEffect(() => {
     if (time == null) {
       const interval = setInterval(() => setTime(Date.now), 500);
+      document.addEventListener("keydown", (e) => {
+        console.log(e.code);
+      });
     } else {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
