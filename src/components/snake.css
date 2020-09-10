@@ -1,7 +1,5 @@
 /* Snake CSS */
 .game-container {
-  width: 900px;
-  height: 600px;
   border: solid black 2px;
 }
 
