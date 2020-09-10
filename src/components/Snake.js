@@ -4,6 +4,13 @@ import "./snake.css";
 
 export const SnakePart = (props) => {};
 
+const getRandomCoordinates = () => {
+  return [
+    Math.floor(Math.random() * Math.floor(30)),
+    Math.floor(Math.random() * Math.floor(20)),
+  ];
+};
+
 export const Snake = (props) => {
   const canvasRef = useRef(null);
   const [ctx, setContext] = useState(null);
@@ -15,6 +22,8 @@ export const Snake = (props) => {
     [13, 10],
   ]);
 
+  const [food, setFood] = useState(getRandomCoordinates());
+
   const drawSnake = (ctx) => {
     ctx.fillStyle = "green";
     console.log("DRAWN SNAKE " + snake);
@@ -22,6 +31,11 @@ export const Snake = (props) => {
       console.log("X " + part[0] + " Y " + part[1]);
       ctx.fillRect(part[0] * 30, part[1] * 30, 29, 29);
     });
+  };
+
+  const drawFood = (ctx) => {
+    ctx.fillStyle = "orange";
+    ctx.fillRect(food[0] * 30, food[1] * 30, 29, 29);
   };
 
   const moveSnake = () => {
@@ -74,9 +88,20 @@ export const Snake = (props) => {
 
   useEffect(() => {
     if (time == null) {
-      const interval = setInterval(() => setTime(Date.now), 500);
+      const interval = setInterval(() => setTime(Date.now), 100);
       document.addEventListener("keydown", (e) => {
-        console.log(e.code);
+        if (e.key === "j" || e.key === "ArrowDown") {
+          setDirection("DOWN");
+        }
+        if (e.key === "k") {
+          setDirection("UP");
+        }
+        if (e.key === "h") {
+          setDirection("LEFT");
+        }
+        if (e.key === "l") {
+          setDirection("RIGHT");
+        }
       });
     } else {
       const canvas = canvasRef.current;
@@ -84,6 +109,7 @@ export const Snake = (props) => {
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       drawSnake(ctx);
+      drawFood(ctx);
       moveSnake();
     }
   }, [time]);
