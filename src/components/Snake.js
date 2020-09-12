@@ -4,17 +4,17 @@ import "./snake.css";
 
 export const SnakePart = (props) => {};
 
-const getRandomCoordinates = () => {
+const getRandomCoordinates = (width = 600, height = 600) => {
   return [
-    Math.floor(Math.random() * Math.floor(30)),
-    Math.floor(Math.random() * Math.floor(20)),
+    Math.floor(Math.random() * Math.floor(width / 30)),
+    Math.floor(Math.random() * Math.floor(height / 30)),
   ];
 };
 
 export const Snake = (props) => {
   const canvasRef = useRef(null);
-  const [ctx, setContext] = useState(null);
   const [time, setTime] = useState(null);
+  const [canvasSize, setCanvasSize] = useState(null);
   const [direction, setDirection] = useState("UP");
   const [snake, setSnake] = useState([
     [15, 10],
@@ -97,7 +97,7 @@ export const Snake = (props) => {
           return tmp;
         }
       });
-      setFood(getRandomCoordinates);
+      setFood(getRandomCoordinates(canvasSize[0], canvasSize[1]));
       setScore((prev) => {
         return prev + 1;
       });
@@ -117,6 +117,7 @@ export const Snake = (props) => {
   useEffect(() => {
     if (time == null) {
       const interval = setInterval(() => setTime(Date.now), 100);
+      setFood(getRandomCoordinates());
       document.addEventListener("keydown", (e) => {
         if (e.key === "j" || e.key === "ArrowDown") {
           setDirection((prev) => {
@@ -154,6 +155,7 @@ export const Snake = (props) => {
     } else {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
+      setCanvasSize([ctx.canvas.width, ctx.canvas.height]);
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       drawFood(ctx);
