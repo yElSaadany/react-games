@@ -26,6 +26,13 @@ export const Snake = (props) => {
   const [score, setScore] = useState(1);
   const [gameOver, setGameOver] = useState(1);
 
+  const stopGame = () => {
+    setGameOver(true);
+    console.log("Game Over");
+    clearInterval(intervalId);
+    props.gameOver(score - 1);
+  };
+
   const drawSnake = (ctx) => {
     ctx.fillStyle = "green";
     snake.map((part) => {
@@ -109,12 +116,22 @@ export const Snake = (props) => {
     const head = snake[0];
     snake.slice(1).forEach((part) => {
       if (part[0] === head[0] && part[1] === head[1]) {
-        setGameOver(true);
-        console.log("Game Over");
-        clearInterval(intervalId);
-        props.gameOver(score - 1);
+        stopGame();
       }
     });
+
+    // The snake hits a wall
+    if (canvasSize != null) {
+      const hitsWall = [
+        head[0] > canvasSize[0] / 30,
+        head[0] < 0,
+        head[1] > canvasSize[1] / 30,
+        head[1] < 0,
+      ];
+      if (hitsWall.some((cond) => cond)) {
+        stopGame();
+      }
+    }
   };
 
   useEffect(() => {
@@ -172,7 +189,6 @@ export const Snake = (props) => {
     <canvas
       ref={canvasRef}
       className="game-container"
-      {...props}
       width="900px"
       height="600px"
     ></canvas>
