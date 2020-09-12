@@ -13,6 +13,7 @@ const getRandomCoordinates = (width = 600, height = 600) => {
 
 export const Snake = (props) => {
   const canvasRef = useRef(null);
+  const [intervalId, setIntervalId] = useState(null);
   const [time, setTime] = useState(null);
   const [canvasSize, setCanvasSize] = useState(null);
   const [direction, setDirection] = useState("UP");
@@ -110,13 +111,15 @@ export const Snake = (props) => {
       if (part[0] === head[0] && part[1] === head[1]) {
         setGameOver(true);
         console.log("Game Over");
+        clearInterval(intervalId);
+        props.gameOver(score - 1);
       }
     });
   };
 
   useEffect(() => {
     if (time == null) {
-      const interval = setInterval(() => setTime(Date.now), 100);
+      setIntervalId(setInterval(() => setTime(Date.now), 100));
       setFood(getRandomCoordinates());
       document.addEventListener("keydown", (e) => {
         if (e.key === "j" || e.key === "ArrowDown") {
