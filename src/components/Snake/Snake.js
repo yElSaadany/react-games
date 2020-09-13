@@ -1,7 +1,5 @@
 import React, { Component, useRef, useEffect, useState } from "react";
 
-import styles from "./snake.module.css";
-
 export const SnakePart = (props) => {};
 
 const getRandomCoordinates = (width = 600, height = 600) => {
@@ -188,11 +186,15 @@ export const Snake = (props) => {
   return (
     <canvas
       ref={canvasRef}
-      className={styles.game_container}
+      style={canvasStyle}
       width="900px"
       height="600px"
     ></canvas>
   );
+};
+
+const canvasStyle = {
+  border: "solid black 2px",
 };
 
 export default Snake;

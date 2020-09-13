@@ -11,6 +11,7 @@
 # production
 /build
 /dist
+.bitmap
 
 # misc
 .DS_Store
