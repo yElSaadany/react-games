@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Snake from "./components/Snake";
+import Snake from "./components/Snake/Snake";
 
 import "./App.css";
 

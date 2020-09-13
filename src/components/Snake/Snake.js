@@ -1,6 +1,6 @@
 import React, { Component, useRef, useEffect, useState } from "react";
 
-import "./snake.css";
+import styles from "./snake.module.css";
 
 export const SnakePart = (props) => {};
 
@@ -188,7 +188,7 @@ export const Snake = (props) => {
   return (
     <canvas
       ref={canvasRef}
-      className="game-container"
+      className={styles.game_container}
       width="900px"
       height="600px"
     ></canvas>
