@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Snake from "./components/Snake/Snake";
+
+import "./App.css";
+import Apple from "./components/Apple/Apple";
 
 function App() {
+  const [playSnake, setPlaySnake] = useState(false);
+  const [playApple, setPlayApple] = useState(false);
+  const gameOver = (score) => {
+    setPlaySnake(false);
+    console.log(score);
+  };
+  const gameOverApple = (score) => {
+    setPlayApple(false);
+    console.log(score);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {!playSnake ? (
+        <button onClick={() => setPlaySnake(true)}>Play Snake</button>
+      ) : (
+        <Snake gameOver={gameOver} />
+      )}
+      {!playApple ? (
+        <button onClick={() => setPlayApple(true)}>Play Apple</button>
+      ) : (
+        <Apple gameOver={gameOverApple} />
+      )}
     </div>
   );
 }
