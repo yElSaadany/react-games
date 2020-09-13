@@ -2,11 +2,22 @@ import React, { Component, useRef, useEffect, useState } from "react";
 
 export const SnakePart = (props) => {};
 
-const getRandomCoordinates = (width = 600, height = 600) => {
-  return [
-    Math.floor(Math.random() * Math.floor(width / 30)),
-    Math.floor(Math.random() * Math.floor(height / 30)),
-  ];
+export const getRandomCoordinates = (
+  width = 600,
+  height = 600,
+  grid = true
+) => {
+  if (grid) {
+    return [
+      Math.floor(Math.random() * Math.floor(width / 30)),
+      Math.floor(Math.random() * Math.floor(height / 30)),
+    ];
+  } else {
+    return [
+      Math.floor(Math.random() * Math.floor(width)),
+      Math.floor(Math.random() * Math.floor(height)),
+    ];
+  }
 };
 
 export const Snake = (props) => {
