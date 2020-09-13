@@ -2,19 +2,31 @@ import React, { useState } from "react";
 import Snake from "./components/Snake/Snake";
 
 import "./App.css";
+import Apple from "./components/Apple/Apple";
 
 function App() {
-  const [play, setPlay] = useState(false);
+  const [playSnake, setPlaySnake] = useState(false);
+  const [playApple, setPlayApple] = useState(false);
   const gameOver = (score) => {
-    setPlay(false);
+    setPlaySnake(false);
     console.log(score);
   };
+  const gameOverApple = (score) => {
+    setPlayApple(false);
+    console.log(score);
+  };
+
   return (
     <div className="App">
-      {!play ? (
-        <button onClick={() => setPlay(true)}>Play Game</button>
+      {!playSnake ? (
+        <button onClick={() => setPlaySnake(true)}>Play Snake</button>
       ) : (
         <Snake gameOver={gameOver} />
+      )}
+      {!playApple ? (
+        <button onClick={() => setPlayApple(true)}>Play Apple</button>
+      ) : (
+        <Apple gameOver={gameOverApple} />
       )}
     </div>
   );
